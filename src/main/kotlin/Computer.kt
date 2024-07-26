@@ -107,7 +107,7 @@ class Computer {
                     stop()
                 }
 
-                instructions[byte1.toInt() shr 4]?.executeInstruction(byte1, byte2)
+                instructions[byte1.toInt() shr 4]?.executeInstruction(byte1, byte2, this)
             }
             catch (e: Exception)
             {
@@ -118,6 +118,17 @@ class Computer {
             0,
             1000L / 500L, // repeat frequency - every 2 ms
             TimeUnit.MILLISECONDS )
+    }
+
+    fun modifyRegister(register: Int, newVal: UByte)
+    {
+        cpu.changeRegister(register, newVal)
+
+    }
+
+    fun setP(newVal: UByte)
+    {
+       // cpu.p = newVal.toInt()
     }
 
 
