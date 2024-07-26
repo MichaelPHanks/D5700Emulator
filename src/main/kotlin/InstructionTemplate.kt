@@ -1,13 +1,13 @@
 package org.example
 
 abstract class InstructionTemplate {
-    fun executeInstruction()
+    fun executeInstruction(firstByte: UByte, secondByte: UByte)
     {
-        performOperation()
+        performOperation(firstByte, secondByte)
         incrementCounter()
 
     }
 
-    abstract fun performOperation()
+    abstract fun performOperation(firstByte: UByte, secondByte: UByte)
     abstract fun incrementCounter()
 }

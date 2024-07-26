@@ -1,11 +1,16 @@
 package org.example
 
 class Jump: InstructionTemplate() {
-    override fun performOperation() {
-        TODO("Not yet implemented")
+    @OptIn(ExperimentalStdlibApi::class)
+    override fun performOperation(firstByte: UByte, secondByte: UByte) {
+        var yeah: Int = 1
+        println("We got to the jump!")
+        println("Setting the p value to ${((firstByte.toInt() and 0xF).toHexString() + secondByte.toHexString()).toUByte()}")
+        // cpu.p =
+        yeah = ((firstByte.toInt() and 0xF).toHexString() + secondByte.toHexString()).toUByte().toInt()
+        println(yeah)
     }
 
     override fun incrementCounter() {
-        TODO("Not yet implemented")
     }
 }

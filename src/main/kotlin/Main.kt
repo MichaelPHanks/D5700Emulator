@@ -6,5 +6,6 @@ fun main() {
     val computer: Computer = Computer()
 
     // Start computer!
-    computer.start()
+    computer.loadInROM()
+    computer.startCPU()
 }

@@ -6,12 +6,11 @@ class ROM {
 
     val memory = UByteArray(4 * 1024)
     // This method is when we first load memory into ROM for execution
-    fun load(memory: ByteArray)
+    fun load(memory: UByteArray)
     {
         var position = 0
         for (byte in memory) {
-            //print(byte.toHexString())
-            this.memory[position] = byte.toUByte()
+            this.memory[position] = byte
             position += 1
         }
 

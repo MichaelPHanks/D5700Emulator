@@ -2,7 +2,10 @@ package org.example
 
 class CPU {
 
-    var p: Int = 0
+    var p: Int = 0x0
+    var t: Byte = 0
+    var a: Int = 0x0
+    var m: Boolean = false
     var r1: Byte? = null
     var r2: Byte? = null
 
