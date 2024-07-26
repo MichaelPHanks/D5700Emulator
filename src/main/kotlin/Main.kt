@@ -1,5 +1,10 @@
 package org.example
 
 fun main() {
-    println("Hello World!")
+    // Talk to the computer from here!
+
+    val computer: Computer = Computer()
+
+    // Start computer!
+    computer.start()
 }
