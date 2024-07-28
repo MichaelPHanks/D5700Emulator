@@ -1,6 +1,6 @@
 package org.example
-@OptIn(ExperimentalUnsignedTypes::class)
 
+@OptIn(ExperimentalUnsignedTypes::class)
 class ROM {
 
 
@@ -13,6 +13,12 @@ class ROM {
             this.memory[position] = byte
             position += 1
         }
+
+    }
+
+    fun write(index: Int, newVal: UByte)
+    {
+        memory[index] = newVal
 
     }
 

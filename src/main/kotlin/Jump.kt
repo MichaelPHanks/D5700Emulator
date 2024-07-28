@@ -3,14 +3,11 @@ package org.example
 class Jump: InstructionTemplate() {
     @OptIn(ExperimentalStdlibApi::class)
     override fun performOperation(firstByte: UByte, secondByte: UByte, computerFacade: Computer) {
-        var yeah: Int = 1
-        println("We got to the jump!")
         println("Setting the p value to ${((firstByte.toInt() and 0xF).toHexString() + secondByte.toHexString()).toUByte()}")
-        // cpu.p =
-        yeah = ((firstByte.toInt() and 0xF).toHexString() + secondByte.toHexString()).toUByte().toInt()
-        println(yeah)
+        computerFacade.setP((firstByte.toInt() and 0xF) + secondByte.toInt())
+
     }
 
-    override fun incrementCounter() {
+    override fun incrementCounter(computerFacade: Computer) {
     }
 }

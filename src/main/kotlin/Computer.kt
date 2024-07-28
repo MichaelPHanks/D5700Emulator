@@ -5,6 +5,7 @@ import java.util.concurrent.Executors
 import java.util.concurrent.Future
 import java.util.concurrent.ScheduledFuture
 import java.util.concurrent.TimeUnit
+import javax.swing.InputMap
 
 
 class Computer {
@@ -36,6 +37,11 @@ class Computer {
 
     )
 
+
+    fun pause()
+    {
+        cpuFuture?.cancel(true)
+    }
 
     @OptIn(ExperimentalUnsignedTypes::class, ExperimentalStdlibApi::class)
     fun loadInROM()
@@ -99,9 +105,6 @@ class Computer {
             try {
                 val byte1 = rom.read(cpu.p)
                 val byte2 = rom.read(cpu.p + 1)
-//                println((byte1.toInt() and 0xF))
-//                println(byte2.toString())
-                cpu.p += 2
                 if (byte1.toInt() == 0 && byte2.toInt() == 0)
                 {
                     stop()
@@ -120,16 +123,79 @@ class Computer {
             TimeUnit.MILLISECONDS )
     }
 
+    fun getRegisterValue(register: Int): UByte?
+    {
+
+        return cpu.registers[register]
+    }
+
     fun modifyRegister(register: Int, newVal: UByte)
     {
         cpu.changeRegister(register, newVal)
 
     }
 
-    fun setP(newVal: UByte)
+    fun setP(newVal: Int)
     {
-       // cpu.p = newVal.toInt()
+       cpu.p = newVal
     }
+
+    fun drawToScreen(rX: Int, row: Int, column: Int)
+    {
+        // Modify ram.
+
+        val byte: UByte = getRegisterValue(rX) ?: throw IllegalArgumentException("Attempting to draw null item to screen!")
+        ram.write(row * 8 + column, byte)
+
+        screen.drawToScreen(byte, row, column)
+        // Display screen
+
+
+    }
+
+    fun getP(): Int
+    {
+        return cpu.p
+    }
+
+    fun setA(a: Int)
+    {
+        cpu.a = a
+    }
+
+    fun setT(t: Int)
+    {
+        cpu.t = t.toUInt()
+    }
+
+    fun getT(): Int{
+        return cpu.t.toInt()
+    }
+
+    fun convertByteToAscii()
+    {
+
+    }
+
+    fun write(register: Int)
+    {
+        val registerVal = getRegisterValue(register)
+
+        if (registerVal != null) {
+
+            if (!cpu.m) {
+                ram.write(cpu.a, registerVal)
+            } else {
+
+                rom.write(cpu.a, registerVal)
+                println("Note that this isn't normal to write to the ROM, but we added this for FUN!")
+
+            }
+        }
+
+    }
+
+
 
 
 }
