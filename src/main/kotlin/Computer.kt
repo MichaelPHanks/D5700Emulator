@@ -172,9 +172,29 @@ class Computer {
         return cpu.t.toInt()
     }
 
-    fun convertByteToAscii()
+    fun convertByteToAscii(registerFrom: Int, registerTo: Int)
     {
+        var data = getRegisterValue(registerFrom)?.toInt()
+        // Convert to ascii
 
+        if (data != null)
+        {
+            if (data > 15)
+            {
+                throw IllegalArgumentException("Value in register was greater than the limit for converting to ASCII!!!")
+            }
+
+            if (data < 10)
+            {
+                data += 48
+            }
+            else
+            {
+                data += 55
+            }
+
+            cpu.changeRegister(registerTo, data.toUByte())
+        }
     }
 
     fun write(register: Int)
@@ -192,6 +212,64 @@ class Computer {
 
             }
         }
+
+    }
+
+    fun read(register: Int)
+    {
+
+
+
+            if (!cpu.m) {
+                val data =  ram.read(cpu.a)
+                modifyRegister(register, data)
+
+            }
+            else {
+
+                val data = rom.read(cpu.a)
+                modifyRegister(register, data)
+
+            }
+
+    }
+
+    fun convertBase10(register: Int)
+    {
+        val data = getRegisterValue(register)?.toInt()
+
+        val hundreds = (data?.div(100))?.toUByte()
+        val tens = ((data?.div(10)?.rem(10)))?.toUByte()
+        val ones = (data?.rem(10))?.toUByte()
+
+        if (!cpu.m)
+        {
+            if (hundreds != null) {
+                ram.write(cpu.a, hundreds)
+            }
+            if (tens != null) {
+                ram.write(cpu.a + 1, tens)
+            }
+            if (ones != null) {
+                ram.write(cpu.a + 2, ones)
+            }
+        }
+        else
+        {
+            if (hundreds != null) {
+                rom.write(cpu.a, hundreds)
+            }
+            if (tens != null) {
+                rom.write(cpu.a + 1, tens)
+            }
+            if (ones != null) {
+                rom.write(cpu.a + 2, ones)
+            }        }
+
+
+
+
+
 
     }
 
