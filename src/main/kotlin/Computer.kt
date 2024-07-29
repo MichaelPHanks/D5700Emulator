@@ -161,6 +161,8 @@ class Computer {
     fun setA(a: Int)
     {
         cpu.a = a
+
+
     }
 
     fun setT(t: Int)
@@ -267,10 +269,11 @@ class Computer {
             }        }
 
 
+    }
 
-
-
-
+    fun switchMemory()
+    {
+        cpu.m = !cpu.m
     }
 
 
