@@ -2,15 +2,15 @@ package org.example
 
 import java.io.File
 import java.util.concurrent.Executors
-import java.util.concurrent.Future
 import java.util.concurrent.ScheduledFuture
 import java.util.concurrent.TimeUnit
-import javax.swing.InputMap
 
 
 class Computer {
-    val executor = Executors.newSingleThreadScheduledExecutor()
-    var cpuFuture : ScheduledFuture<*>? = null
+    private val executor = Executors.newSingleThreadScheduledExecutor()
+    private var cpuFuture : ScheduledFuture<*>? = null
+
+    private var cpuTCounter: ScheduledFuture<*>? = null
 
     private var rom = ROM()
     val cpu = CPU()
@@ -51,40 +51,6 @@ class Computer {
         //rom.load()
         val file = File(inputString).readBytes().map {it.toUByte()}.toUByteArray()
         rom.load(file)
-
-//        file.forEachLine {
-//
-//            println(it.toByteArray())
-//            rom.load(it.toByteArray())
-//        }
-
-        var yeah = 0
-//        for (item in rom.memory)
-//        {
-//            println("Actual ${item}")
-//            println(item.toInt() shr 4)
-//            println(item.toInt() and 0xF)
-//            yeah ++
-//            if (yeah == 10)
-//            {
-//                break
-//            }
-//        }
-
-        // Perform first operation!
-
-//        for (thing in rom.memory ) {
-//            val byte1 = rom.read(cpu.p)
-//            val byte2 = rom.read(cpu.p + 1)
-//            println((byte1.toInt() and 0xF))
-//            println(byte2.toString())
-//            cpu.p += 2
-//
-//            instructions[byte1.toInt() shr 4]?.executeInstruction(byte1, byte2)
-//        }
-
-
-
     }
 
     fun stop()
@@ -97,6 +63,26 @@ class Computer {
             executor.shutdown() // turns off the executor allowing the program to terminate when the end is reached
         }
 
+    }
+
+    fun TCounter()
+    {
+        val counter = Runnable {
+            try {
+                if (getT() > 0)
+                {
+                    setT(getT() - 1)
+                }
+            }
+            catch (e: Exception)
+            {
+                println("There was an exception when decrementing T! : $e")
+            }
+        }
+        cpuTCounter = executor.scheduleAtFixedRate(counter,
+            0,
+            (1000L / 62.5).toLong(), // repeat frequency - every 2 ms
+            TimeUnit.MILLISECONDS )
     }
 
     fun startCPU()
@@ -121,6 +107,7 @@ class Computer {
             0,
             1000L / 500L, // repeat frequency - every 2 ms
             TimeUnit.MILLISECONDS )
+        TCounter()
     }
 
     fun getRegisterValue(register: Int): UByte?
@@ -131,7 +118,7 @@ class Computer {
 
     fun modifyRegister(register: Int, newVal: UByte)
     {
-        cpu.changeRegister(register, newVal)
+        cpu.changeRegisterValue(register, newVal)
 
     }
 
@@ -183,6 +170,7 @@ class Computer {
         {
             if (data > 15)
             {
+                // this.stop()
                 throw IllegalArgumentException("Value in register was greater than the limit for converting to ASCII!!!")
             }
 
@@ -195,7 +183,7 @@ class Computer {
                 data += 55
             }
 
-            cpu.changeRegister(registerTo, data.toUByte())
+            cpu.changeRegisterValue(registerTo, data.toUByte())
         }
     }
 

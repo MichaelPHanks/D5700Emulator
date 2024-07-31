@@ -19,7 +19,7 @@ class Screen {
         displayScreen()
 
     }
-    fun displayScreen()
+    private fun displayScreen()
     {
         var counter = 0
         println("========")

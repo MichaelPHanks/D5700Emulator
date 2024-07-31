@@ -9,14 +9,14 @@ class CPU {
 
 
 
-    var registers: MutableList<UByte?> = MutableList(8) {null}
+    var registers: MutableList<UByte?> = MutableList(8) {0u}
 
 
-    fun changeRegister(register: Int, newVal: UByte)
+    fun changeRegisterValue(register: Int, newVal: UByte)
     {
-        println("Before modification: ${registers[register]}")
+        //println("Before modification: ${registers[register]}")
         registers[register] = newVal
-        println("After modification: ${registers[register]}")
+        //println("After modification: ${registers[register]}")
 
     }
 
