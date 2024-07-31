@@ -11,6 +11,6 @@ abstract class InstructionTemplate {
     abstract fun performOperation(firstByte: UByte, secondByte: UByte, computerFacade: Computer)
     open fun incrementCounter(computerFacade: Computer)
     {
-        computerFacade.cpu.p += 2
+        computerFacade.setP(computerFacade.getP() + 2)
     }
 }

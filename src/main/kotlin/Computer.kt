@@ -13,7 +13,7 @@ class Computer {
     private var cpuTCounter: ScheduledFuture<*>? = null
 
     private var rom = ROM()
-    val cpu = CPU()
+    private val cpu = CPU()
     private var ram = RAM()
     private var screen = Screen()
 
@@ -36,7 +36,6 @@ class Computer {
         15 to Draw(),
 
     )
-
 
     fun pause()
     {
@@ -124,7 +123,7 @@ class Computer {
 
     fun setP(newVal: Int)
     {
-       cpu.p = newVal
+       cpu.setP(newVal)
     }
 
     fun drawToScreen(rX: Int, row: Int, column: Int)
@@ -147,14 +146,14 @@ class Computer {
 
     fun setA(a: Int)
     {
-        cpu.a = a
+        cpu.setA(a)
 
 
     }
 
     fun setT(t: Int)
     {
-        cpu.t = t.toUInt()
+        cpu.setT(t.toUInt())
     }
 
     fun getT(): Int{
@@ -261,7 +260,7 @@ class Computer {
 
     fun switchMemory()
     {
-        cpu.m = !cpu.m
+        cpu.setM()
     }
 
 

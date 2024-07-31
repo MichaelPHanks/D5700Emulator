@@ -4,9 +4,6 @@ package org.example
 class Screen {
 
     private var display: UByteArray = UByteArray(64)
-
-
-
     fun drawToScreen(rX: UByte, row: Int, column: Int)
     {
         try {
