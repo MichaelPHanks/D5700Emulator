@@ -16,12 +16,20 @@ class ROM {
 
     fun write(index: Int, newVal: UByte)
     {
+        if (index >= memory.size)
+        {
+            throw IllegalArgumentException("Out of bounds memory write")
+        }
         memory[index] = newVal
 
     }
 
     fun read(index: Int): UByte
     {
+        if (index >= memory.size)
+        {
+            throw IllegalArgumentException("Out of bounds memory write")
+        }
         return this.memory[index]
 
     }

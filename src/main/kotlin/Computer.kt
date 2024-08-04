@@ -49,7 +49,14 @@ class Computer {
         val inputString: String = readln()
         //rom.load()
         val file = File(inputString).readBytes().map {it.toUByte()}.toUByteArray()
-        rom.load(file)
+        this.loadRom(file)
+    }
+
+
+    @OptIn(ExperimentalUnsignedTypes::class)
+    fun loadRom(info: UByteArray)
+    {
+        rom.load(info)
     }
 
     fun stop()
@@ -126,17 +133,37 @@ class Computer {
        cpu.setP(newVal)
     }
 
+    fun getA(): Int
+    {
+        return cpu.a
+    }
+
+    fun getM(): Boolean
+    {
+        return cpu.m
+    }
+
     fun drawToScreen(rX: Int, row: Int, column: Int)
     {
         // Modify ram.
 
         val byte: UByte = getRegisterValue(rX) ?: throw IllegalArgumentException("Attempting to draw null item to screen!")
+        if (byte.toInt() > 127)
+        {
+            this.stop()
+            throw IllegalArgumentException("Tried to draw something to the screen that cannot be drawn!")
+        }
         ram.write(row * 8 + column, byte)
 
         screen.drawToScreen(byte, row, column)
         // Display screen
 
 
+    }
+
+    fun getScreenValue(row: Int, column: Int): UByte
+    {
+        return this.screen.getScreenValue(row, column)
     }
 
     fun getP(): Int
@@ -164,15 +191,13 @@ class Computer {
     {
         var data = getRegisterValue(registerFrom)?.toInt()
         // Convert to ascii
-
         if (data != null)
         {
             if (data > 15)
             {
-                // this.stop()
+                this.stop()
                 throw IllegalArgumentException("Value in register was greater than the limit for converting to ASCII!!!")
             }
-
             if (data < 10)
             {
                 data += 48
@@ -181,21 +206,17 @@ class Computer {
             {
                 data += 55
             }
-
             cpu.changeRegisterValue(registerTo, data.toUByte())
         }
     }
-
     fun write(register: Int)
     {
         val registerVal = getRegisterValue(register)
-
         if (registerVal != null) {
-
             if (!cpu.m) {
                 ram.write(cpu.a, registerVal)
-            } else {
-
+            }
+            else {
                 rom.write(cpu.a, registerVal)
                 println("Note that this isn't normal to write to the ROM, but we added this for FUN!")
 
@@ -206,21 +227,14 @@ class Computer {
 
     fun read(register: Int)
     {
-
-
-
             if (!cpu.m) {
                 val data =  ram.read(cpu.a)
                 modifyRegister(register, data)
-
             }
             else {
-
                 val data = rom.read(cpu.a)
                 modifyRegister(register, data)
-
             }
-
     }
 
     fun convertBase10(register: Int)
@@ -253,17 +267,12 @@ class Computer {
             }
             if (ones != null) {
                 rom.write(cpu.a + 2, ones)
-            }        }
-
-
+            }
+        }
     }
-
     fun switchMemory()
     {
         cpu.setM()
     }
-
-
-
 
 }

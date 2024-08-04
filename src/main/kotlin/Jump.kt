@@ -1,11 +1,13 @@
 package org.example
 
 class Jump: InstructionTemplate() {
-    @OptIn(ExperimentalStdlibApi::class)
     override fun performOperation(firstByte: UByte, secondByte: UByte, computerFacade: Computer) {
-        //println("Setting the p value to ${((firstByte.toInt() and 0xF).toHexString() + secondByte.toHexString()).toUByte()}")
-        computerFacade.setP((firstByte.toInt() and 0xF) + secondByte.toInt())
-
+        if ((((firstByte.toInt() and 0xF).toString(16) + (secondByte.toInt() shr 4).toString(16) + (secondByte.toInt() and 0xF).toString(16)).toInt(16)) % 2 != 0)
+        {
+            computerFacade.stop()
+            throw IllegalArgumentException("Program counter needs to be even!")
+        }
+        computerFacade.setP((((firstByte.toInt() and 0xF).toString(16) + (secondByte.toInt() shr 4).toString(16) + (secondByte.toInt() and 0xF).toString(16)).toInt(16)))
     }
 
     override fun incrementCounter(computerFacade: Computer) {

@@ -16,7 +16,6 @@ class ReadKeyboard: InstructionTemplate() {
         if (hexValue != null && hexValue in 0..255) {
             input = hexValue.toUByte().toString()
             computerFacade.modifyRegister(firstByte.toInt() and 0xF, input.toInt().toUByte())
-
         }
         else {
             println("Invalid input. Please enter a valid hexadecimal digit.")
@@ -24,10 +23,9 @@ class ReadKeyboard: InstructionTemplate() {
 
 
         // Create new runnable instance
-
-        println("Putting the value ${input.toInt().toUByte()} into register ${firstByte.toInt() and 0xF}")
         computerFacade.startCPU()
 
     }
+
 
 }

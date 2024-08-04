@@ -7,7 +7,6 @@ class SkipEqual: InstructionTemplate() {
      //   println("Second value: ${computerFacade.getRegisterValue(secondByte.toInt() shr 4)}")
         if (computerFacade.getRegisterValue(firstByte.toInt() and 0xF) == computerFacade.getRegisterValue(secondByte.toInt() shr 4))
         {
-            println("Skipping the instruction...")
             computerFacade.setP(computerFacade.getP() + 2)
         }
     }
