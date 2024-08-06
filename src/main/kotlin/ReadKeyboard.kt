@@ -22,6 +22,8 @@ class ReadKeyboard: InstructionTemplate() {
         }
 
 
+
+
         // Create new runnable instance
         computerFacade.startCPU()
 

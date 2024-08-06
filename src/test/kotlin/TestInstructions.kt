@@ -5,6 +5,7 @@ import java.lang.IllegalArgumentException
 import kotlin.test.Test
 import kotlin.test.assertEquals
 import kotlin.test.assertFailsWith
+import java.io.ByteArrayInputStream
 
 class TestInstructions {
 
@@ -85,7 +86,22 @@ class TestInstructions {
     @Test
     fun TestReadKeyboard()
     {
-        // NOTE: Can't test this without mocking readLine() in the method. Not really sure how to do that :/
+        var computer = Computer()
+        val input = ByteArrayInputStream("1".toByteArray())
+        System.setIn(input)
+        computer.instructions[6]?.executeInstruction(16u,0u, computer)
+        assertEquals(1u, computer.getRegisterValue(0))
+        val input2 = ByteArrayInputStream("9z".toByteArray())
+        computer = Computer()
+        System.setIn(input2)
+        computer.instructions[6]?.executeInstruction(1u,0u, computer)
+        assertEquals(0u, computer.getRegisterValue(1))
+        System.setIn(System.`in`)
+
+        computer.instructions[6]?.executeInstruction(5u,0u, computer)
+        assertEquals(0u, computer.getRegisterValue(5))
+
+
     }
     @Test
     fun TestSwitchMemory()
