@@ -29,9 +29,7 @@ class TestInstructions {
 
         computer.instructions[0]?.executeInstruction(1u,2u, computer)
         computer.instructions[0]?.executeInstruction(0u,2u, computer)
-        //assertEquals(2u ,computer.getRegisterValue(1))
         computer.instructions[1]?.executeInstruction(16u,16u, computer)
-      //  assertFailsWith<IndexOutOfBoundsException> { computer.instructions[1]?.executeInstruction(8u,100u, computer)}
         assertEquals(4u ,computer.getRegisterValue(0))
     }
 
@@ -42,9 +40,7 @@ class TestInstructions {
 
         computer.instructions[0]?.executeInstruction(1u,2u, computer)
         computer.instructions[0]?.executeInstruction(0u,16u, computer)
-        //assertEquals(2u ,computer.getRegisterValue(1))
         computer.instructions[2]?.executeInstruction(16u,16u, computer)
-        //  assertFailsWith<IndexOutOfBoundsException> { computer.instructions[1]?.executeInstruction(8u,100u, computer)}
         assertEquals(14u ,computer.getRegisterValue(0))
     }
     @OptIn(ExperimentalUnsignedTypes::class)
@@ -201,9 +197,7 @@ class TestInstructions {
     {
         val computer = Computer()
         computer.instructions[0]?.executeInstruction(0u,2u, computer)
-        //assertEquals(2u ,computer.getRegisterValue(1))
         computer.instructions[14]?.executeInstruction(16u,16u, computer)
-        //  assertFailsWith<IndexOutOfBoundsException> { computer.instructions[1]?.executeInstruction(8u,100u, computer)}
         assertEquals(50u ,computer.getRegisterValue(1))
 
         computer.instructions[0]?.executeInstruction(0u,14u, computer)
@@ -216,7 +210,6 @@ class TestInstructions {
 
         assertFailsWith<IllegalArgumentException> {computer.instructions[14]?.executeInstruction(16u,16u, computer)}
 
-      //  assertEquals(69u ,computer.getRegisterValue(1))
 
     }
     @Test
